@@ -22,9 +22,12 @@
                 <td>{{ livre.prix}}</td>
                 <td><a href="{{ url('livres_show',{'id':livre.id}) }}">Voir détail...</a></td>
                 <td><a href="#">Editer</a></td>
-                <td><a href="#">Supprimer</a></td>
+                <td><a href="{{ url('livres_delete',{'id':livre.id}) }}">Supprimer</a></td>
             </tr>
         {% endfor %}
     </table>
+    <div class="navigation">
+        {{ knp_pagination_render(livres) }}
+    </div>
 
 {% endblock %}

@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Livres;
 use App\Repository\LivresRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,9 +21,13 @@ final class LivresController extends AbstractController
         ]);
     }
     #[Route('/livres/lister', name: 'livres_lister')]
-    public function lister(LivresRepository $rep): Response
-    { $livres = $rep->findAll();
-       // dd($livres);
+    public function lister(LivresRepository $rep,PaginatorInterface $paginator, Request $request): Response
+    {
+        $livres = $paginator->paginate(
+            $rep->findAll(), /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            10 /* limit per page */
+        );
         return $this->render('livres/lister.html.twig', [
             'livres' => $livres,
         ]);
@@ -33,6 +39,14 @@ final class LivresController extends AbstractController
         return $this->render('livres/show.html.twig', [
             'livre' => $livre,
         ]);
+    }
+
+    #[Route('/livres/delete/{id}', name: 'livres_delete')]
+    public function delete(LivresRepository $rep,$id,EntityManagerInterface $em): Response
+    { $livre = $rep->find($id);
+       $em->remove($livre);
+       $em->flush();
+        return $this->redirectToRoute('livres_lister');
     }
 
     #[Route('/livres/add', name: 'livres_add')]
