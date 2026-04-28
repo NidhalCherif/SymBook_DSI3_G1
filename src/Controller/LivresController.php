@@ -13,11 +13,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
+#[isGranted('ROLE_ADMIN')]
 #[Route('/admin', name: 'admin_')]
 final class LivresController extends AbstractController
 {
+
     #[Route('/livres', name: 'livres')]
     public function index(): Response
     {
@@ -25,6 +28,7 @@ final class LivresController extends AbstractController
             'controller_name' => 'LivresController',
         ]);
     }
+
     #[Route('/livres/lister', name: 'livres_lister')]
     public function lister(LivresRepository $rep,PaginatorInterface $paginator, Request $request): Response
     {
