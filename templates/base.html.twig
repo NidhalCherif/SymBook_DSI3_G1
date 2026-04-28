@@ -15,7 +15,16 @@
     </head>
     <body>
 {% include 'partials/_navbar.html.twig' %}
+
     <div class="container mt-3">
+        {% for type,messages in app.flashes  %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                {{ message }}
+                </div>
+            {% endfor %}
+
+        {% endfor %}
         {% block body %}
         {% endblock %}
     </div>

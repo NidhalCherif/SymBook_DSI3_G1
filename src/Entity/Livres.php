@@ -42,7 +42,7 @@ class Livres
     private ?int $qte = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
-    private ?categories $cat = null;
+    private ?Categories $cat = null;
 
     public function getId(): ?int
     {
@@ -157,12 +157,12 @@ class Livres
         return $this;
     }
 
-    public function getCat(): ?categories
+    public function getCat(): ?Categories
     {
         return $this->cat;
     }
 
-    public function setCat(?categories $cat): static
+    public function setCat(?Categories $cat): static
     {
         $this->cat = $cat;
 
